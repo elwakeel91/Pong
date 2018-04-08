@@ -1050,10 +1050,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aae259b36d1045458acea085b0c068d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSpeed: 1
+  startSpeed: 2
+  maxSpeed: 5
   trail: {fileID: 1839975731}
-  playerOnePosition: {fileID: 0}
-  playerTwoPosition: {fileID: 0}
+  playerOnePosition: {fileID: 2119342801}
+  playerTwoPosition: {fileID: 188893373}
 --- !u!23 &1587305791
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1101,7 +1102,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 72
   m_CollisionDetection: 0
 --- !u!135 &1587305793
 SphereCollider:
@@ -1128,14 +1129,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1587305789}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.70710677}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 1839975729}
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 90.00001, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1621984263
 GameObject:
   m_ObjectHideFlags: 0
