@@ -56,9 +56,14 @@ public class GameController : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+        // Check if player one has made an input
         if (Input.GetAxisRaw("Vertical1") != 0)
+            // Move player one
             MovePlayer(1);
+
+        // Check if player two has made an input
         if (Input.GetAxisRaw("Vertical2") != 0)
+            // Move player two
             MovePlayer(2);
     }
 

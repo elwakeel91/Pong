@@ -93,7 +93,6 @@ public class BallController : MonoBehaviour
             speed += 0.25f;
             // Make sure the speed doesn't exceed our max speed
             speed = Mathf.Clamp(speed, 0.0f, maxSpeed);
-            Debug.Log(speed);
         }
 
         // Check if we collide with the walls
