@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
     int playerOneScore;         // Player one's score
     int playerTwoScore;         // Player two's score
 
+    BallController ball;        // The ball controller script attached to our ball game object
+
     #endregion
 
     #region Unity Methods
@@ -41,6 +43,10 @@ public class GameController : MonoBehaviour
         playerOneScore = 0;
         playerTwoScore = 0;
         UpdateScore();
+
+        // Get the ball controller script from the ball game object
+        GameObject ballGO = GameObject.FindGameObjectWithTag("Ball");
+        ball = ballGO.GetComponent<BallController>();
     }
 
     /// <summary>
@@ -48,7 +54,10 @@ public class GameController : MonoBehaviour
     /// </summary>
     void Update()
     {
-
+        // Check if the user has pressed the space bar and the ball isn't moving
+        if (Input.GetKeyDown(KeyCode.Space) && !ball.IsMoving)
+            // Start moving the ball
+            ball.StartMoving();
     }
 
     /// <summary>
