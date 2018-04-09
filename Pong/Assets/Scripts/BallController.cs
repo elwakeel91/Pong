@@ -77,17 +77,24 @@ public class BallController : MonoBehaviour
         // Check if we collide with the players
         if (other.gameObject.CompareTag("Player"))
         {
+            // Check which player we collided with (if we are in the positive x then we hit player two)
             Transform playerPosition = (transform.position.x > 0) ? playerTwoPosition : playerOnePosition;
-            // Check which part of the paddle we hit
-            float distanceFromCentre = (transform.position.y - playerPosition.position.y);
-            int direction = (distanceFromCentre > 0) ? 1 : -1;
-            // Calculate the angle we hit the paddle
-            float angle = transform.eulerAngles.x;
-            // Calculate the angle we get off the paddle (ranging from -60 to 60 degrees)
-            float newAngle = Mathf.Abs(angle) > Mathf.Abs(distanceFromCentre * 150.0f) ? angle * direction : (-distanceFromCentre * 150);
-            
 
-            // Rotate the direction of the ball 180 degrees in the y axis
+            // Calculate which part of the paddle we hit
+            float distanceFromCentre = (transform.position.y - playerPosition.position.y);
+            // Calculate which direction the ball should bounce back (up or down)
+            float direction = (distanceFromCentre > 0) ? -1.0f : 1.0f;
+            // Calculate the angle we get off the paddle (use 125 to get angles ranging from around -50 to 50 degrees)
+            float paddleAngle = Mathf.Abs(distanceFromCentre) * 62.5f;
+            // Calculate the angle before we hit the paddle
+            float angle = (transform.eulerAngles.x >= 300) ? 360 - transform.eulerAngles.x : transform.eulerAngles.x;
+
+            // Calculate the new angle
+            float newAngle = angle > paddleAngle ? (angle * direction) : (paddleAngle * direction);
+            // Make sure it's clamped between -50 and 50 degrees
+            newAngle = Mathf.Clamp(newAngle, -50, 50);         
+
+            // Rotate the direction of the ball
             rb.MoveRotation(Quaternion.Euler(newAngle, -transform.eulerAngles.y, 0));
             // Increase the speed of the ball by 0.25
             speed += 0.25f;
@@ -98,8 +105,10 @@ public class BallController : MonoBehaviour
         // Check if we collide with the walls
         if (other.gameObject.CompareTag("Wall"))
         {
+            // Make sure the new angle is between -50 and 50
+            float newAngle = Mathf.Clamp(360 - transform.eulerAngles.x, -50, 50);
             // Rotate the direction of the ball 180 degrees in the x axis
-            rb.MoveRotation(Quaternion.Euler(-transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z));
+            rb.MoveRotation(Quaternion.Euler(newAngle, transform.eulerAngles.y, 0));
         }
 
         // Check if we collide with the goal
