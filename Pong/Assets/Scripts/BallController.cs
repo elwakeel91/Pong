@@ -12,9 +12,6 @@ public class BallController : MonoBehaviour
     public ParticleSystem trail;            // Particle system containing our ball trail
     public bool IsMoving { get; set; }      // Bool to check if the ball is allowed to move
 
-    public Transform playerOnePosition;     // The position of player one
-    public Transform playerTwoPosition;     // The position of player two
-
     #endregion
 
     #region Private Variables
@@ -26,9 +23,7 @@ public class BallController : MonoBehaviour
 
     // Unity properties
     Rigidbody rb;                       // Rigid body component of the ball
-
-    // Other scripts
-    GameController gameController;      // Game Controller script
+    AudioSource audioSource;            // Audio Source attached to the ball
 
     #endregion
 
@@ -39,12 +34,12 @@ public class BallController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        speed = startSpeed;                     // Initialise the speed
-        startPosition = transform.position;     // Initialise the start position
-        IsMoving = false;                       // Initialise the movement vector
+        speed = startSpeed;                             // Initialise the speed
+        startPosition = transform.position;             // Initialise the start position
+        IsMoving = false;                               // Initialise the movement vector
 
-        rb = GetComponent<Rigidbody>();         // Set the rigid body component
-        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();     // Set the game controller script
+        rb = GetComponent<Rigidbody>();                 // Set the rigid body component
+        audioSource = GetComponent<AudioSource>();      // Set the audio source
     }
 
     /// <summary>
@@ -77,6 +72,10 @@ public class BallController : MonoBehaviour
         {
             // Change the Y direction vector
             direction = new Vector3(direction.x, -direction.y, 0);
+
+            // Play the collision audio audio
+            audioSource.pitch = 1;
+            audioSource.Play();
         }
 
         // Check if we collide with the players
@@ -87,12 +86,15 @@ public class BallController : MonoBehaviour
             // Change the direction vector
             direction = new Vector3(-direction.x, yVector, 0);
             direction.Normalize();
-            Debug.Log(direction);
 
             // Increase the speed of the ball by 0.25
             speed += 0.25f;
             // Make sure the speed doesn't exceed our max speed
             speed = Mathf.Clamp(speed, 0.0f, maxSpeed);
+
+            // Play the collision audio
+            audioSource.pitch = 2;
+            audioSource.Play();
         }
 
         // Check if we collide with the goal
@@ -100,6 +102,10 @@ public class BallController : MonoBehaviour
         {
             // Reset the ball position
             RestartPosition();
+
+            // Access the Game Controller script
+            GameObject gameControllerGO = GameObject.FindGameObjectWithTag("GameController");
+            GameController gameController = gameControllerGO.GetComponent<GameController>();
 
             // Check if the ball is in the positive x axis
             if (transform.position.x > 0)
@@ -123,7 +129,7 @@ public class BallController : MonoBehaviour
         IsMoving = false;
         rb.velocity = Vector3.zero;
         direction = Vector3.zero;
-        // Pause the trail particle system
+        // Stop the trail particle system
         trail.Stop();
         // Return to the starting position
         rb.position = startPosition;
@@ -142,6 +148,17 @@ public class BallController : MonoBehaviour
         speed = startSpeed;
         // Start moving the ball
         IsMoving = true;
+    }
+
+    /// <summary>
+    /// Changes the speed by the amount 'deltaSpeed'
+    /// </summary>
+    /// <param name="deltaSpeed"></param>
+    public void SetSpeed (float deltaSpeed)
+    {
+        // Increase the speed and maximum speed by deltaSpeed
+        speed += deltaSpeed;
+        maxSpeed += deltaSpeed;
     }
 
     #endregion

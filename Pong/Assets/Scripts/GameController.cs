@@ -7,20 +7,12 @@ public class GameController : MonoBehaviour
 {
     #region Public Variables
 
-    public float playerStartSpeed = 2;      // The start speed of the players
-    public Transform playerOnePosition;     // The position of player one
-    public Transform playerTwoPosition;     // The position of player two
-
     public Text playerOneScoreText;         // The UI text for player one's score
     public Text playerTwoScoreText;         // The UI text for player two's score
 
     #endregion
 
     #region Private Variables
-
-    float playerOneSpeed;       // Player one's current speed
-    float playerTwoSpeed;       // Player two's current speed
-    Vector3 movement;           // The movement vector for the player
 
     int playerOneScore;         // Player one's score
     int playerTwoScore;         // Player two's score
@@ -36,9 +28,6 @@ public class GameController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        // Initialise the speed of the players
-        playerOneSpeed = playerTwoSpeed = playerStartSpeed;
-
         // Initialise the score
         playerOneScore = 0;
         playerTwoScore = 0;
@@ -65,15 +54,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        // Check if player one has made an input
-        if (Input.GetAxisRaw("Vertical1") != 0)
-            // Move player one
-            MovePlayer(1);
-
-        // Check if player two has made an input
-        if (Input.GetAxisRaw("Vertical2") != 0)
-            // Move player two
-            MovePlayer(2);
+        
     }
 
     #endregion
@@ -105,32 +86,6 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region Private Methods
-
-    /// <summary>
-    /// Handles moving the player
-    /// </summary>
-    /// <param name="playerNumber"></param>
-    void MovePlayer(int playerNumber)
-    {
-        // Switch between the player number
-        switch (playerNumber)
-        {
-            case 1:
-                // Set the movement vector using player one's input
-                movement = new Vector3(0, playerOneSpeed, 0) * Input.GetAxisRaw("Vertical1");
-                // Move the player using the movement vector
-                playerOnePosition.Translate(movement * Time.deltaTime);
-                break;
-            case 2:
-                // Set the movement vector using player two's input
-                movement = new Vector3(0, playerTwoSpeed, 0) * Input.GetAxisRaw("Vertical2");
-                // Move the player using the movement vector
-                playerTwoPosition.Translate(movement * Time.deltaTime);
-                break;
-            default:
-                break;
-        }
-    }
 
     /// <summary>
     /// Handles updating the score
