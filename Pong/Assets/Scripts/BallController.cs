@@ -9,8 +9,10 @@ public class BallController : MonoBehaviour
 
     public float startSpeed = 1.0f;         // Start speed of the ball (default is 1)
     public float maxSpeed = 5.0f;           // Maximum speed of the ball (default is 5)
-    public ParticleSystem trail;            // Particle system containing our ball trail
     public bool IsMoving { get; set; }      // Bool to check if the ball is allowed to move
+
+    public ParticleSystem trailVFX;            // Particle system containing our ball trail
+    public GameObject sparksVFX;               // Game object containing our sparks particle system
 
     #endregion
 
@@ -76,6 +78,11 @@ public class BallController : MonoBehaviour
             // Play the collision audio audio
             audioSource.pitch = 1;
             audioSource.Play();
+
+            // Instantiate our sparks
+            float zRot = transform.position.y > 0 ? -90 : 90;
+            GameObject sparks = Instantiate(sparksVFX, transform.position, Quaternion.Euler(0, 0, zRot)) as GameObject;
+            Destroy(sparks, 1.0f);
         }
 
         // Check if we collide with the players
@@ -83,7 +90,7 @@ public class BallController : MonoBehaviour
         {
             // Calculate the paddle hit angle
             float yVector = PaddleAngle(other);
-            // Change the direction vector
+            // Change the direction vector of our movement
             direction = new Vector3(-direction.x, yVector, 0);
             direction.Normalize();
 
@@ -95,6 +102,11 @@ public class BallController : MonoBehaviour
             // Play the collision audio
             audioSource.pitch = 2;
             audioSource.Play();
+
+            // Instantiate our sparks
+            float yRot = transform.position.x > 0 ? 180 : 0;
+            GameObject sparks = Instantiate(sparksVFX, transform.position, Quaternion.Euler(0, yRot, 0)) as GameObject;
+            Destroy(sparks, 1.0f);
         }
 
         // Check if we collide with the goal
@@ -130,7 +142,7 @@ public class BallController : MonoBehaviour
         rb.velocity = Vector3.zero;
         direction = Vector3.zero;
         // Stop the trail particle system
-        trail.Stop();
+        trailVFX.Stop();
         // Return to the starting position
         rb.position = startPosition;
     }
@@ -141,7 +153,7 @@ public class BallController : MonoBehaviour
     public void StartMoving()
     {
         // Start the trail particle system
-        trail.Play();
+        trailVFX.Play();
         // Rotate the ball to 90 degrees in the y axis
         direction = Vector3.right;
         // Reset the speed of the ball
