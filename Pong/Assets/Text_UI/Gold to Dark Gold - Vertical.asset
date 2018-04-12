@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 2108210716, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
-  m_Name: New TMP Color Gradient
+  m_Name: Gold to Dark Gold - Vertical
   m_EditorClassIdentifier: 
   topLeft: {r: 0.8014706, g: 0.8014706, b: 0.5362781, a: 1}
   topRight: {r: 0.8, g: 0.8, b: 0.5372549, a: 1}

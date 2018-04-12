@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
     #region Public Variables
 
-    public Text playerOneScoreText;         // The UI text for player one's score
-    public Text playerTwoScoreText;         // The UI text for player two's score
+    public TextMeshProUGUI playerOneScoreText;         // The UI text for player one's score
+    public TextMeshProUGUI playerTwoScoreText;         // The UI text for player two's score
 
     #endregion
 
