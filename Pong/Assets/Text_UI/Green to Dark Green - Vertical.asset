@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 2108210716, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
-  m_Name: Gold to Dark Gold - Vertical
+  m_Name: Green to Dark Green - Vertical
   m_EditorClassIdentifier: 
-  topLeft: {r: 0.8014706, g: 0.8014706, b: 0.5362781, a: 1}
-  topRight: {r: 0.8, g: 0.8, b: 0.5372549, a: 1}
-  bottomLeft: {r: 0.74264705, g: 0.74264705, b: 0.34402034, a: 1}
-  bottomRight: {r: 0.7411765, g: 0.7411765, b: 0.34509805, a: 1}
+  topLeft: {r: 0.308391, g: 0.9117647, b: 0.308391, a: 1}
+  topRight: {r: 0.3975454, g: 0.9485294, b: 0.3975454, a: 1}
+  bottomLeft: {r: 0.044117644, g: 0.35294116, b: 0.044117644, a: 1}
+  bottomRight: {r: 0, g: 0, b: 0, a: 1}

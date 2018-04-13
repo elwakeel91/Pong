@@ -28,6 +28,8 @@ public class GameController : MonoBehaviour
     /// </summary>
     void Start()
     {
+
+
         // Initialise the score
         playerOneScore = 0;
         playerTwoScore = 0;
