@@ -11,12 +11,16 @@ public class BallController : MonoBehaviour
     public float maxSpeed = 5.0f;           // Maximum speed of the ball (default is 5)
     public bool IsMoving { get; set; }      // Bool to check if the ball is allowed to move
 
-    public ParticleSystem trailVFX;            // Particle system containing our ball trail
-    public GameObject sparksVFX;               // Game object containing our sparks particle system
+    public ParticleSystem trailVFX;         // Particle system containing our ball trail
+    public GameObject sparksVFX;            // Game object containing our sparks particle system
 
     #endregion
 
     #region Private Variables
+
+    [HideInInspector]
+    public float lifeTime;              // The current life of the ball for each point
+    public float startMovingTime;       // The time the ball starts to move
 
     // Ball properties
     float speed;                        // The current speed of the ball
@@ -39,6 +43,7 @@ public class BallController : MonoBehaviour
         speed = startSpeed;                             // Initialise the speed
         startPosition = transform.position;             // Initialise the start position
         IsMoving = false;                               // Initialise the movement vector
+        lifeTime = 0;                                   // Initialise the life of the ball
 
         rb = GetComponent<Rigidbody>();                 // Set the rigid body component
         audioSource = GetComponent<AudioSource>();      // Set the audio source
@@ -49,7 +54,10 @@ public class BallController : MonoBehaviour
     /// </summary>
     void Update()
     {
-
+        // Check that the ball is moving
+        if (IsMoving)
+            // Set the ball life time
+            lifeTime = Time.time - startMovingTime;
     }
 
     /// <summary>
@@ -141,6 +149,7 @@ public class BallController : MonoBehaviour
         IsMoving = false;
         rb.velocity = Vector3.zero;
         direction = Vector3.zero;
+        startMovingTime = 0;
         // Stop the trail particle system
         trailVFX.Stop();
         // Return to the starting position
@@ -154,10 +163,12 @@ public class BallController : MonoBehaviour
     {
         // Start the trail particle system
         trailVFX.Play();
-        // Rotate the ball to 90 degrees in the y axis
+        // Reset the direction vector to (1, 0, 0)
         direction = Vector3.right;
         // Reset the speed of the ball
         speed = startSpeed;
+        // Reset the life of the ball
+        startMovingTime = Time.time;
         // Start moving the ball
         IsMoving = true;
     }

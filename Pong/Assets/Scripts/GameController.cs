@@ -5,10 +5,12 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    #region Public Variables
+    #region Inspector Variables
 
-    public TextMeshProUGUI playerOneScoreText;         // The UI text for player one's score
-    public TextMeshProUGUI playerTwoScoreText;         // The UI text for player two's score
+    public TextMeshProUGUI playerOneScoreText;          // The UI text for player one's score
+    public TextMeshProUGUI playerTwoScoreText;          // The UI text for player two's score
+    public GameObject[] PowerUps;                       // Array of power ups
+    public float spawnTime = 5.0f;                      // The time each powerup will spawn
 
     #endregion
 
@@ -16,6 +18,7 @@ public class GameController : MonoBehaviour
 
     int playerOneScore;         // Player one's score
     int playerTwoScore;         // Player two's score
+    float startSpawnTime;       // The start timer for spawning powerUps
 
     BallController ball;        // The ball controller script attached to our ball game object
 
@@ -28,8 +31,6 @@ public class GameController : MonoBehaviour
     /// </summary>
     void Start()
     {
-
-
         // Initialise the score
         playerOneScore = 0;
         playerTwoScore = 0;
@@ -38,6 +39,10 @@ public class GameController : MonoBehaviour
         // Get the ball controller script from the ball game object
         GameObject ballGO = GameObject.FindGameObjectWithTag("Ball");
         ball = ballGO.GetComponent<BallController>();
+
+        // Spawn PowerUps
+        if (PowerUps.Length != 0)
+            StartCoroutine(SpawnPowerUps());
     }
 
     /// <summary>
@@ -47,8 +52,10 @@ public class GameController : MonoBehaviour
     {
         // Check if the user has pressed the space bar and the ball isn't moving
         if (Input.GetKeyDown(KeyCode.Space) && !ball.IsMoving)
+        {
             // Start moving the ball
             ball.StartMoving();
+        }
     }
 
     /// <summary>
@@ -88,6 +95,23 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region Private Methods
+
+    IEnumerator SpawnPowerUps()
+    {
+        while (true)
+        {
+            while (!ball.IsMoving)
+                startSpawnTime = Time.time;
+
+            yield return new WaitUntil(() => ball.IsMoving && Time.time - startSpawnTime > spawnTime);
+            int index = Random.Range(0, PowerUps.Length - 1);
+            float yPosition = Random.Range(-2.5f, 2.5f);
+            float xPosition = Random.Range(-2.5f, 2.5f);
+            GameObject powerUp = Instantiate(PowerUps[index], new Vector3(xPosition, yPosition, -0.5f), Quaternion.identity) as GameObject;
+            yield return new WaitWhile(() => powerUp.GetComponent<Collider>().enabled);
+            startSpawnTime = Time.time;
+        }
+    }
 
     /// <summary>
     /// Handles updating the score
